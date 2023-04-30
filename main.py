@@ -20,7 +20,13 @@ bot = Client(
     bot_token = BOT_TOKEN
 )
 
-
+async def is_admins(chat_id: int):
+    return [
+        member.user.id
+        async for member in bot.iter_chat_members(
+            chat_id, filter="administrators"
+        )
+    ]
 
 @bot.on_message(filters.command("start"))
 async def start(client, message):
