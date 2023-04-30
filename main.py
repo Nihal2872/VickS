@@ -33,28 +33,6 @@ async def start(client, message):
         await message.reply_text("Hi! My name is Ishi. I'm an Artificial Intelligence\n /chatbot - [on|off]")
 
 
-@bot.on_message(
-    filters.command("chatbot off", prefixes=["/", ".", "?", "-"])
-    & ~filters.private)
-async def chatbotofd(client, message):
-    vickdb = MongoClient(MONGO_URL)    
-    vick = vickdb["VickDb"]["Vick"]     
-    if message.from_user:
-        user = message.from_user.id
-        chat_id = message.chat.id
-        if user not in (
-           await is_admins(chat_id)
-        ):
-           return await message.reply_text(
-                "You are not admin"
-            )
-    is_vick = vick.find_one({"chat_id": message.chat.id})
-    if not is_vick:
-        vick.insert_one({"chat_id": message.chat.id})
-        await message.reply_text(f"Chatbot Disabled!")
-    if is_vick:
-        await message.reply_text(f"ChatBot Is Already Disabled")
-    
 
 @bot.on_message(
     filters.command("chatbot on", prefixes=["/", ".", "?", "-"])
